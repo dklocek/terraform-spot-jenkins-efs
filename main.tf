@@ -9,31 +9,32 @@ resource "aws_spot_fleet_request" "SpotRequest" {
   terminate_instances_with_expiration = true
 
   launch_specification {
-    ami = "ami-06fd8a495a537da8b"
+    ami = var.UbuntuServer20
     instance_type = "t3a.small"
     user_data = data.template_file.Spot_Userdata.rendered
+
   }
 
   launch_specification {
-    ami = "ami-06fd8a495a537da8b"
+    ami = var.UbuntuServer20
     instance_type = "t3.small"
     user_data = data.template_file.Spot_Userdata.rendered
   }
 
   launch_specification {
-    ami = "ami-06fd8a495a537da8b"
+    ami = var.UbuntuServer20
     instance_type = "t3a.medium"
     user_data = data.template_file.Spot_Userdata.rendered
   }
 
   launch_specification {
-    ami = "ami-06fd8a495a537da8b"
+    ami = var.UbuntuServer20
     instance_type = "t3.medium"
     user_data = data.template_file.Spot_Userdata.rendered
   }
 
   launch_specification {
-    ami = "ami-06fd8a495a537da8b"
+    ami = var.UbuntuServer20
     instance_type = "t2.medium"
     user_data = data.template_file.Spot_Userdata.rendered
   }

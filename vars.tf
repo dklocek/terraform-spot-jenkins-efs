@@ -1,7 +1,7 @@
-variable "ami" {
+variable "UbuntuServer20" {
 type = string
 description = "AMI ID"
-default = "ami-08a2aed6e0a6f9c7d"
+default = "ami-06fd8a495a537da8b"
 
 }
 
@@ -14,7 +14,3 @@ variable "SpotPrice" {
   default = "0.01"
 }
 
-variable "instance_type" {
-  type = string
-  default = "t3.medium"
-}
