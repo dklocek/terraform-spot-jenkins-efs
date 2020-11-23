@@ -10,7 +10,7 @@ resource "aws_spot_fleet_request" "SpotRequest" {
 
   launch_specification {
     ami = var.UbuntuServer20
-    instance_type = "t3a.small"
+    instance_type = var.InstanceType
     user_data = data.template_file.Spot_Userdata.rendered
 
   }

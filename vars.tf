@@ -14,3 +14,8 @@ variable "SpotPrice" {
   default = "0.01"
 }
 
+variable "InstanceType"{
+  type = string
+  default = "t3a.small"
+}
+
