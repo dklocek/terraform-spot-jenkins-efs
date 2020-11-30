@@ -16,3 +16,5 @@ docker pull jenkins/jenkins
 docker run --name jenkins -p 8080:8080 -p 50000-50010:50000-50010 -v /efs/jenkins_home:/var/jenkins_home jenkins/jenkins &
 docker update --restart=always jenkins
 docker start jenkins
+sleep 10
+docker exec -it -u root jenkins apt update && apt-get install python3
