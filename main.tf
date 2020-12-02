@@ -7,6 +7,7 @@ resource "aws_spot_fleet_request" "SpotRequest" {
   target_capacity = 1
   spot_price = var.SpotPrice
   terminate_instances_with_expiration = true
+  wait_for_fulfillment = true
 
   launch_specification {
     ami = var.UbuntuServer20
