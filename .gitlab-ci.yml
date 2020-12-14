@@ -1,0 +1,77 @@
+image:
+  name: dklocek/appserv:latest
+
+# Default output file for Terraform plan
+variables:
+  PLAN: plan.tfplan
+  JSON_PLAN_FILE: tfplan.json
+  STATE: terraform.tfstate
+
+cache:
+  paths:
+    - .terraform
+
+before_script:
+  - alias convert_report="jq -r '([.resource_changes[]?.change.actions?]|flatten)|{\"create\":(map(select(.==\"create\"))|length),\"update\":(map(select(.==\"update\"))|length),\"delete\":(map(select(.==\"delete\"))|length)}'"
+  - terraform --version
+  - terraform init
+
+stages:
+  - validate
+  - build
+  - test
+  - deploy
+  - destroy
+
+validate:
+  stage: validate
+  script:
+    - terraform validate
+  tags:
+    - runner
+
+plan:
+  stage: build
+  script:
+    - terraform plan -out=$PLAN
+    - "terraform show --json $PLAN | convert_report > $JSON_PLAN_FILE"
+  artifacts:
+    paths:
+      - $PLAN
+    reports:
+      terraform: $JSON_PLAN_FILE
+  tags:
+    - runner
+
+# Separate apply job for manual launching Terraform as it can be destructive
+# action.
+apply:
+  stage: deploy
+  environment:
+    name: production
+  script:
+    - terraform apply -input=false $PLAN
+  dependencies:
+    - plan
+  artifacts:
+    paths:
+      - terraform.tfstate
+  when: manual
+  only:
+    - master
+  tags:
+    - runner
+
+destroy:
+  stage: destroy
+  environment:
+    name: production
+  script:
+    - terraform destroy -auto-approve
+  dependencies:
+    - apply
+  when: manual
+  only:
+    - master
+  tags:
+    - runner
